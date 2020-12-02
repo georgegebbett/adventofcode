@@ -24,9 +24,8 @@ def splitUpInput(passwordBlock):
 
 def isPasswordValid(splitOutput):
 	global validPasswords
-	if (splitOutput[3].count(splitOutput[2])) <= splitOutput[1]:
-		if (splitOutput[3].count(splitOutput[2])) >= splitOutput[0]:
-			validPasswords += 1
+	if (splitOutput[3].count(splitOutput[2])) <= splitOutput[1] and (splitOutput[3].count(splitOutput[2])) >= splitOutput[0]:
+		validPasswords += 1
 
 
 
