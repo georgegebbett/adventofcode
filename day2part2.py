@@ -5,7 +5,7 @@ validPasswords = 0
 
 
 def splitInputWithRegex(passwordBlock):
-	splitInput = list(re.findall("^(\d+)-(\d+) (\w): (\w+)$", passwordBlock)[0])
+	splitInput = re.findall("^(\d+)-(\d+) (\w): (\w+)$", passwordBlock)[0]
 
 	return int(splitInput[0])-1, int(splitInput[1])-1, splitInput[2], splitInput[3]
 
