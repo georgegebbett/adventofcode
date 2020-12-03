@@ -12,5 +12,4 @@ for rowTry in puzzleInput:
 	if column > 30:
 		column = column - 31
 
-
 print treesEncountered
