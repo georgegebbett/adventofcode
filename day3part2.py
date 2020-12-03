@@ -7,21 +7,15 @@ def goDownTheSlope(colInt, rowInt):
 	treesEncountered = 0
 
 	for rowTry in puzzleInput:
-
 		try:
 			if puzzleInput[row][column] == "#":
 				treesEncountered += 1
 		except IndexError:
 			break
-
 		column += colInt
 		if column > 29:
 			column -= 31
-
-
 		row += rowInt
-
-
 	return treesEncountered
 
 
