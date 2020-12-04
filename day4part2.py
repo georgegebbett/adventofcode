@@ -9,7 +9,6 @@ for passport in puzzleInput:
 	keyList = passport.keys()
 	if "byr" in keyList and "iyr" in keyList and "eyr" in keyList and "hgt" in keyList and "hcl" in keyList and "ecl" in keyList and "pid" in keyList:
 		if 1920 <= int(passport.get("byr")) <= 2002:
-			print "birthYear is " + passport.get("byr")
 			if 2010 <= int(passport.get("iyr")) <= 2020:
 				if 2020 <= int(passport.get("eyr")) <= 2030:
 					if passport.get("ecl") in goodColours:
