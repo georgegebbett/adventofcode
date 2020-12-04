@@ -14,8 +14,8 @@ for passport in puzzleInput:
 				if 2020 <= int(passport.get("eyr")) <= 2030:
 					if passport.get("ecl") in goodColours:
 						if len(passport.get("pid")) == 9:
-							if re.findall("#(?:[0-9]|[a-f]){6}", passport.get("hcl")):				
-								if re.search("(\d+)(in|cm)", passport.get("hgt")) != None:
+							if re.search("#(?:[0-9]|[a-f]){6}", passport.get("hcl")):				
+								if re.search("(\d+)(in|cm)", passport.get("hgt")):
 									if re.findall("(\d+)(in|cm)", passport.get("hgt"))[0][1] == "cm":
 										if 150 <= int(re.findall("(\d+)(in|cm)", passport.get("hgt"))[0][0]) <= 193:
 											validPassports += 1
