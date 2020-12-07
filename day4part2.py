@@ -13,13 +13,13 @@ for passport in puzzleInput:
 				if 2020 <= int(passport.get("eyr")) <= 2030:
 					if passport.get("ecl") in goodColours:
 						if len(passport.get("pid")) == 9:
-							if re.search("#(?:[0-9]|[a-f]){6}", passport.get("hcl")):				
-								if re.search("(\d+)(in|cm)", passport.get("hgt")):
-									if re.findall("(\d+)(in|cm)", passport.get("hgt"))[0][1] == "cm":
-										if 150 <= int(re.findall("(\d+)(in|cm)", passport.get("hgt"))[0][0]) <= 193:
+							if re.search("#[0-9a-f]{6}", passport.get("hcl")):				
+								if re.search("\d+in|cm", passport.get("hgt")):
+									if re.search("cm", passport.get("hgt")):
+										if 150 <= int(re.findall("\d+", passport.get("hgt"))[0]) <= 193:
 											validPassports += 1
-									elif re.findall("(\d+)(in|cm)", passport.get("hgt"))[0][1] == "in":
-										if 59 <= int(re.findall("(\d+)(in|cm)", passport.get("hgt"))[0][0]) <= 76:
+									elif re.search("in", passport.get("hgt")):
+										if 59 <= int(re.findall("\d+", passport.get("hgt"))[0]) <= 76:
 											validPassports += 1
 
 
