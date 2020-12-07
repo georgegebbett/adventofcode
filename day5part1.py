@@ -5,8 +5,6 @@ puzzleInput = ["FBFBBBFRLR", "FBBFBBBLLR", "FFFFFBBRRL", "BBBFFFBRRL", "BFFBFBFL
 seatIDList = []
 
 
-	
-
 def getSeatID(seat):
 	firstPass = re.sub("F|L", "0", seat)
 	binSeat = re.sub("B|R", "1", firstPass)
