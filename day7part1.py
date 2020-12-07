@@ -18,18 +18,22 @@ def createRuleDict():
 	return ruleDict
 	puzzleFile.close()
 
-def checkContainsColour(bag, reqdColour):
+def checkContainsColour(bag, reqdColour, ultimateBag):
 	if reqdColour in ruleDict[bag] and ultimateBag not in bagsContainColour:
 		bagsContainColour.append(ultimateBag)
 	else:
 		for containedBag in ruleDict[bag]:
-			checkContainsColour(containedBag, reqdColour)
+			checkContainsColour(containedBag, reqdColour, ultimateBag)
 
-ruleDict = createRuleDict()
-bagsContainColour = []
+def numBagsContainColour(reqdColour):
+	global ruleDict
+	global bagsContainColour
+	ruleDict = createRuleDict()
+	bagsContainColour = []
+	for item in ruleDict:
+		ultimateBag = item
+		checkContainsColour(item, "shiny gold", ultimateBag)
+	return len(bagsContainColour)
 
-for item in ruleDict:
-	ultimateBag = item
-	checkContainsColour(item, "shiny gold")
 
-print len(bagsContainColour)
+print numBagsContainColour("shiny gold")
