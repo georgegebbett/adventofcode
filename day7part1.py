@@ -19,7 +19,6 @@ def createRuleDict():
 	puzzleFile.close()
 
 def checkContainsColour(bag, reqdColour):
-	global bagsContainGold
 	if reqdColour in ruleDict[bag] and ultimateBag not in bagsContainColour:
 		bagsContainColour.append(ultimateBag)
 	else:
