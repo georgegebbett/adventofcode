@@ -4,7 +4,6 @@ testMode = False
 
 pointer = 0
 accumulator = 0
-ops = 1
 
 def loadInstructions():
 	if testMode == False:
@@ -17,18 +16,20 @@ def loadInstructions():
 	puzzleFile.close()
 	return instructionsInVar
 
-def runComputer(instructions, repeating):
-	global ops
+def runComputer(instructions):
 	global pointer
 	global accumulator
+	repeating = False
 	if repeating == False:
+		print "running input program"
 		instructionsRun = []
 		while True:
 			if pointer in instructionsRun:
-				repeating = True	
+				repeating = True
+				print "no luck with the input program (loop found), going to substitutions"	
 				break
 			elif pointer > len(instructions):
-				print accumulator
+				print "input program gave good output, which is", accumulator
 				break
 			else:
 				instructionsRun.append(pointer)
@@ -38,7 +39,9 @@ def runComputer(instructions, repeating):
 
 	if repeating == True:
 		instructions = generateInstructions(getJmpList(instructions), instructions)
+		subTry = 0
 		for ins in instructions:
+			subTry += 1
 			pointer = 0
 			accumulator = 0
 			instructionsRun = []
@@ -56,20 +59,18 @@ def runComputer(instructions, repeating):
 					doOps(instruction, modifier)
 			
 			if success == True:
-				return(accumulator)
+				print "substitution successful on attempt", str(subTry) + ", output is", accumulator
+				break
+				
 
 
 def doOps(instruction, modifier):
 	if instruction == "acc":
 		doAcc(modifier)
 	elif instruction == "jmp":
-		lastPointer = pointer	
 		doJmp(modifier)
-		lastOp = "jmp"
 	elif instruction == "nop":
-		lastPointer = pointer
 		doNop()
-		lastOp = "nop"
 
 def doAcc(accVal):
 	global accumulator
@@ -87,15 +88,8 @@ def doNop():
 
 
 def getJmpList(instructions):
-	global pointer
-	global accumulator
-	instructionsRun = []
-	pointer = 0
 	checkIndex = 0
 	nopJmpIndexes = []
-	instructionsList = []
-	originalInstructions = instructions
-	success = False
 	for ins in instructions:
 		instruction = re.findall("^(\w+) ([\+\-]\d+)$", ins)[0][0]
 		modifier = re.findall("^(\w+) ([\+\-]\d+)$", ins)[0][1]	
@@ -104,6 +98,7 @@ def getJmpList(instructions):
 			nopJmpIndexes.append(checkIndex)
 		elif re.findall("^(\w+) ([\+\-]\d+)$", ins)[0][0] == "jmp":
 			nopJmpIndexes.append(checkIndex)
+		
 		checkIndex += 1
 	return nopJmpIndexes
 
@@ -126,5 +121,4 @@ def generateInstructions(nopJmpIndex, instructions):
 
 
 
-
-print(runComputer(loadInstructions(), False))
+runComputer(loadInstructions())
