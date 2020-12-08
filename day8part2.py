@@ -60,7 +60,7 @@ def runComputer(instructions):
                     modifier = re.findall("^(\w+) ([\+\-]\d+)$", ins[pointer])[0][1]
                     doOps(instruction, modifier)
 
-            if success == True:
+            if success:
                 print("substitution successful on attempt", str(subTry) + ", output is", accumulator)
                 break
 
@@ -96,11 +96,10 @@ def getJmpList(instructions):
     nopJmpIndexes = []
     for ins in instructions:
         instruction = re.findall("^(\w+) ([\+\-]\d+)$", ins)[0][0]
-        modifier = re.findall("^(\w+) ([\+\-]\d+)$", ins)[0][1]
 
-        if re.findall("^(\w+) ([\+\-]\d+)$", ins)[0][0] == "nop":
+        if instruction == "nop":
             nopJmpIndexes.append(checkIndex)
-        elif re.findall("^(\w+) ([\+\-]\d+)$", ins)[0][0] == "jmp":
+        elif instruction == "jmp":
             nopJmpIndexes.append(checkIndex)
 
         checkIndex += 1
