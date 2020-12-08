@@ -1,12 +1,12 @@
 import re
 
-testMode = False
-
 pointer = 0
 accumulator = 0
+testModeGlobal = True
 
-
-def loadInstructions():
+def loadInstructions(testMode):
+    global testModeGlobal
+    testModeGlobal = testMode
     if not testMode:
         puzzleFile = open("input/day8part1.txt", "r")
     else:
@@ -117,8 +117,8 @@ def generateInstructions(nopJmpIndex, instructions):
         elif instruction == "jmp":
             instructions[occ] = "nop " + modifier
         instructionsList.append(instructions)
-        instructions = loadInstructions()
+        instructions = loadInstructions(testModeGlobal)
     return instructionsList
 
 
-runComputer(loadInstructions())
+runComputer(loadInstructions(testMode=False))
