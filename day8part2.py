@@ -17,24 +17,46 @@ def loadInstructions():
 	puzzleFile.close()
 	return instructionsInVar
 
-def runComputer(instructions):
+def runComputer(instructions, repeating):
 	global ops
 	global pointer
-	instructionsRun = []
-	swap = False
-	while True:
-		if pointer in instructionsRun:
-			runWhileReplacing(instructions)
-			break
-		elif pointer > len(instructions):
-			print accumulator
-			break
-		else:
-			instructionsRun.append(pointer)
-		
-		instruction = re.findall("^(\w+) ([\+\-]\d+)$", instructions[pointer])[0][0]
-		modifier = re.findall("^(\w+) ([\+\-]\d+)$", instructions[pointer])[0][1]		
-		doOps(instruction, modifier)
+	global accumulator
+	if repeating == False:
+		instructionsRun = []
+		while True:
+			if pointer in instructionsRun:
+				repeating = True	
+				break
+			elif pointer > len(instructions):
+				print accumulator
+				break
+			else:
+				instructionsRun.append(pointer)
+				instruction = re.findall("^(\w+) ([\+\-]\d+)$", instructions[pointer])[0][0]
+				modifier = re.findall("^(\w+) ([\+\-]\d+)$", instructions[pointer])[0][1]		
+				doOps(instruction, modifier)
+
+	if repeating == True:
+		instructions = generateInstructions(getJmpList(instructions), instructions)
+		for ins in instructions:
+			pointer = 0
+			accumulator = 0
+			instructionsRun = []
+			success = False
+			while True:
+				if pointer in instructionsRun:
+					break
+				elif pointer >= len(ins):
+					success = True
+					break
+				else:
+					instructionsRun.append(pointer)
+					instruction = re.findall("^(\w+) ([\+\-]\d+)$", ins[pointer])[0][0]
+					modifier = re.findall("^(\w+) ([\+\-]\d+)$", ins[pointer])[0][1]
+					doOps(instruction, modifier)
+			
+			if success == True:
+				return(accumulator)
 
 
 def doOps(instruction, modifier):
@@ -64,13 +86,14 @@ def doNop():
 	pointer += 1
 
 
-def runWhileReplacing(instructions):
+def getJmpList(instructions):
 	global pointer
 	global accumulator
 	instructionsRun = []
 	pointer = 0
 	checkIndex = 0
 	nopJmpIndexes = []
+	instructionsList = []
 	originalInstructions = instructions
 	success = False
 	for ins in instructions:
@@ -82,42 +105,26 @@ def runWhileReplacing(instructions):
 		elif re.findall("^(\w+) ([\+\-]\d+)$", ins)[0][0] == "jmp":
 			nopJmpIndexes.append(checkIndex)
 		checkIndex += 1
+	return nopJmpIndexes
 
-	for occ in nopJmpIndexes:
+def generateInstructions(nopJmpIndex, instructions):
+	instructionsList = []
+	for occ in nopJmpIndex:
 		pointer = 0
 		accumulator = 0
 		instruction = re.findall("^(\w+) ([\+\-]\d+)$", instructions[occ])[0][0]
 		modifier = re.findall("^(\w+) ([\+\-]\d+)$", instructions[occ])[0][1]
-		instructionsRun = []
 
 
 		if instruction == "nop":
 			instructions[occ] = "jmp " + modifier
 		elif instruction == "jmp":
 			instructions[occ] = "nop " + modifier 
-
-		instructionsRun = []
-		while True:
-			if pointer in instructionsRun:
-				break
-			elif pointer >= len(instructions):
-				print accumulator
-				success = True
-				break
-			else:
-				instructionsRun.append(pointer)
-
-				instruction = re.findall("^(\w+) ([\+\-]\d+)$", instructions[pointer])[0][0]
-				modifier = re.findall("^(\w+) ([\+\-]\d+)$", instructions[pointer])[0][1]
-				
-				doOps(instruction, modifier)
-		
-		if success == True:
-			break
-			
+		instructionsList.append(instructions)
 		instructions = loadInstructions()
+	return instructionsList
 
 
 
 
-runComputer(loadInstructions())
+print(runComputer(loadInstructions(), False))
