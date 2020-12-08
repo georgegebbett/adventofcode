@@ -21,15 +21,15 @@ def runComputer(instructions):
 	global accumulator
 	repeating = False
 	if repeating == False:
-		print "running input program"
+		print("running input program")
 		instructionsRun = []
 		while True:
 			if pointer in instructionsRun:
 				repeating = True
-				print "no luck with the input program (loop found), going to substitutions"	
+				print("no luck with the input program (loop found), going to substitutions")
 				break
 			elif pointer > len(instructions):
-				print "input program gave good output, which is", accumulator
+				print("input program gave good output, which is", accumulator)
 				break
 			else:
 				instructionsRun.append(pointer)
@@ -59,7 +59,7 @@ def runComputer(instructions):
 					doOps(instruction, modifier)
 			
 			if success == True:
-				print "substitution successful on attempt", str(subTry) + ", output is", accumulator
+				print ("substitution successful on attempt", str(subTry) + ", output is", accumulator)
 				break
 				
 
