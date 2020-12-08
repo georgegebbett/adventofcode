@@ -71,6 +71,7 @@ def runWhileReplacing(instructions):
 	pointer = 0
 	checkIndex = 0
 	nopJmpIndexes = []
+	instructionsList = []
 	originalInstructions = instructions
 	success = False
 	for ins in instructions:
@@ -88,14 +89,19 @@ def runWhileReplacing(instructions):
 		accumulator = 0
 		instruction = re.findall("^(\w+) ([\+\-]\d+)$", instructions[occ])[0][0]
 		modifier = re.findall("^(\w+) ([\+\-]\d+)$", instructions[occ])[0][1]
-		instructionsRun = []
 
 
 		if instruction == "nop":
 			instructions[occ] = "jmp " + modifier
 		elif instruction == "jmp":
 			instructions[occ] = "nop " + modifier 
+		instructionsList.append(instructions)
+		instructions = loadInstructions()
 
+
+	for instructions in instructionsList:
+		pointer = 0
+		accumulator = 0
 		instructionsRun = []
 		while True:
 			if pointer in instructionsRun:
@@ -109,13 +115,12 @@ def runWhileReplacing(instructions):
 
 				instruction = re.findall("^(\w+) ([\+\-]\d+)$", instructions[pointer])[0][0]
 				modifier = re.findall("^(\w+) ([\+\-]\d+)$", instructions[pointer])[0][1]
-				
 				doOps(instruction, modifier)
 		
 		if success == True:
 			break
 			
-		instructions = loadInstructions()
+		
 
 
 
